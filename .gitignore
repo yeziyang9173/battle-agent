@@ -55,7 +55,12 @@ coverage/
 # Build outputs
 dist/
 build/
+.next/
 *.egg-info/
+
+# Local app data
+prisma/*.db
+prisma/*.db-journal
 
 # Personal notes and scratch files
 scratch/

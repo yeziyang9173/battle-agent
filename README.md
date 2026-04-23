@@ -22,6 +22,94 @@ Born from a Reddit thread and months of iteration, **The Agency** is a growing c
 
 ---
 
+## ✨ Visual Runner UI
+
+This repository now also includes a **minimal Next.js visual runner** for live multi-agent conversations.
+
+The app turns the existing markdown agent files into a browsable cast, then lets you:
+
+- pick 2 or more agents from the repository
+- provide a shared topic and briefing
+- start a round-robin conversation loop
+- watch the transcript stream live in the browser
+- reopen past runs from local history
+
+### CLI runner first
+
+If you just want agents to talk to each other without the browser, use the CLI runner:
+
+```bash
+ANTHROPIC_API_KEY=your_key_here npm run chat-agents -- \
+  --agents agents-orchestrator,trend-researcher,tool-evaluator \
+  --topic "Discuss recent developments in the agent ecosystem" \
+  --briefing "OpenClaw and Hermes are drawing attention as agent UX and orchestration patterns evolve." \
+  --max-turns 8
+```
+
+What you will see:
+- **live output in the terminal** as each agent speaks
+- saved transcript files in `runs/<timestamp>.json`
+- a readable markdown transcript in `runs/<timestamp>.md`
+
+You can also pass `--briefing-file ./briefing.txt` instead of inline `--briefing`.
+
+### What powers the UI
+
+- **Agent source of truth**: existing markdown files in the category folders
+- **Prompt body**: markdown body content from each agent file
+- **UI metadata**: frontmatter fields like `name`, `description`, `color`, `emoji`, and `vibe`
+- **Persistence**: Prisma + SQLite
+- **Streaming**: SSE from the server to the browser
+- **Model provider**: Anthropic via `@anthropic-ai/sdk`
+
+### Run it locally
+
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Create env vars:
+
+```bash
+cp .env.example .env
+```
+
+Then set `ANTHROPIC_API_KEY` in `.env`.
+
+3. Generate Prisma client and sync the SQLite schema:
+
+```bash
+npm run prisma:generate
+npm run db:push
+```
+
+4. Start the app:
+
+```bash
+npm run dev
+```
+
+5. Open the local Next.js URL shown in the terminal.
+
+### Demo flow
+
+Recommended demo topic:
+
+- **Topic**: `Discuss recent developments in the agent ecosystem`
+- **Briefing**: paste a shared summary covering tools like OpenClaw and Hermes
+- **Agents**: try `Agents Orchestrator`, `Trend Researcher`, and `Tool Evaluator`
+
+### Notes
+
+- The current orchestrator is a **round-robin MVP**.
+- The app is intentionally **briefing-first**: agents do not independently browse the web by default.
+- Conversation history is stored locally in SQLite.
+- If `ANTHROPIC_API_KEY` is missing, run creation still works, but starting a live conversation will fail.
+
+---
+
 ## ⚡ Quick Start
 
 ### Option 1: Use with Claude Code (Recommended)
@@ -246,675 +334,3 @@ The backbone of the operation.
 ### 🥽 Spatial Computing Division
 
 Building the immersive future.
-
-| Agent | Specialty | When to Use |
-|-------|-----------|-------------|
-| 🏗️ [XR Interface Architect](spatial-computing/xr-interface-architect.md) | Spatial interaction design, immersive UX | AR/VR/XR interface design, spatial computing UX |
-| 💻 [macOS Spatial/Metal Engineer](spatial-computing/macos-spatial-metal-engineer.md) | Swift, Metal, high-performance 3D | macOS spatial computing, Vision Pro native apps |
-| 🌐 [XR Immersive Developer](spatial-computing/xr-immersive-developer.md) | WebXR, browser-based AR/VR | Browser-based immersive experiences, WebXR apps |
-| 🎮 [XR Cockpit Interaction Specialist](spatial-computing/xr-cockpit-interaction-specialist.md) | Cockpit-based controls, immersive systems | Cockpit control systems, immersive control interfaces |
-| 🍎 [visionOS Spatial Engineer](spatial-computing/visionos-spatial-engineer.md) | Apple Vision Pro development | Vision Pro apps, spatial computing experiences |
-| 🔌 [Terminal Integration Specialist](spatial-computing/terminal-integration-specialist.md) | Terminal integration, command-line tools | CLI tools, terminal workflows, developer tools |
-
-### 🎯 Specialized Division
-
-The unique specialists who don't fit in a box.
-
-| Agent | Specialty | When to Use |
-|-------|-----------|-------------|
-| 🎭 [Agents Orchestrator](specialized/agents-orchestrator.md) | Multi-agent coordination, workflow management | Complex projects requiring multiple agent coordination |
-| 🔍 [LSP/Index Engineer](specialized/lsp-index-engineer.md) | Language Server Protocol, code intelligence | Code intelligence systems, LSP implementation, semantic indexing |
-| 📥 [Sales Data Extraction Agent](specialized/sales-data-extraction-agent.md) | Excel monitoring, sales metric extraction | Sales data ingestion, MTD/YTD/Year End metrics |
-| 📈 [Data Consolidation Agent](specialized/data-consolidation-agent.md) | Sales data aggregation, dashboard reports | Territory summaries, rep performance, pipeline snapshots |
-| 📬 [Report Distribution Agent](specialized/report-distribution-agent.md) | Automated report delivery | Territory-based report distribution, scheduled sends |
-| 🔐 [Agentic Identity & Trust Architect](specialized/agentic-identity-trust.md) | Agent identity, authentication, trust verification | Multi-agent identity systems, agent authorization, audit trails |
-| 🔗 [Identity Graph Operator](specialized/identity-graph-operator.md) | Shared identity resolution for multi-agent systems | Entity deduplication, merge proposals, cross-agent identity consistency |
-| 💸 [Accounts Payable Agent](specialized/accounts-payable-agent.md) | Payment processing, vendor management, audit | Autonomous payment execution across crypto, fiat, stablecoins |
-| 🛡️ [Blockchain Security Auditor](specialized/blockchain-security-auditor.md) | Smart contract audits, exploit analysis | Finding vulnerabilities in contracts before deployment |
-| 📋 [Compliance Auditor](specialized/compliance-auditor.md) | SOC 2, ISO 27001, HIPAA, PCI-DSS | Guiding organizations through compliance certification |
-| 🌍 [Cultural Intelligence Strategist](specialized/specialized-cultural-intelligence-strategist.md) | Global UX, representation, cultural exclusion | Ensuring software resonates across cultures |
-| 🗣️ [Developer Advocate](specialized/specialized-developer-advocate.md) | Community building, DX, developer content | Bridging product and developer community |
-| 🔬 [Model QA Specialist](specialized/specialized-model-qa.md) | ML audits, feature analysis, interpretability | End-to-end QA for machine learning models |
-| 🗃️ [ZK Steward](specialized/zk-steward.md) | Knowledge management, Zettelkasten, notes | Building connected, validated knowledge bases |
-| 🔌 [MCP Builder](specialized/specialized-mcp-builder.md) | Model Context Protocol servers, AI agent tooling | Building MCP servers that extend AI agent capabilities |
-| 📄 [Document Generator](specialized/specialized-document-generator.md) | PDF, PPTX, DOCX, XLSX generation from code | Professional document creation, reports, data visualization |
-| ⚙️ [Automation Governance Architect](specialized/automation-governance-architect.md) | Automation governance, n8n, workflow auditing | Evaluating and governing business automations at scale |
-| 📚 [Corporate Training Designer](specialized/corporate-training-designer.md) | Enterprise training, curriculum development | Designing training systems and learning programs |
-| 🏛️ [Government Digital Presales Consultant](specialized/government-digital-presales-consultant.md) | China ToG presales, digital transformation | Government digital transformation proposals and bids |
-| ⚕️ [Healthcare Marketing Compliance](specialized/healthcare-marketing-compliance.md) | China healthcare advertising compliance | Healthcare marketing regulatory compliance |
-| 🎯 [Recruitment Specialist](specialized/recruitment-specialist.md) | Talent acquisition, recruiting operations | Recruitment strategy, sourcing, and hiring processes |
-| 🎓 [Study Abroad Advisor](specialized/study-abroad-advisor.md) | International education, application planning | Study abroad planning across US, UK, Canada, Australia |
-| 🔗 [Supply Chain Strategist](specialized/supply-chain-strategist.md) | Supply chain management, procurement strategy | Supply chain optimization and procurement planning |
-| 🗺️ [Workflow Architect](specialized/specialized-workflow-architect.md) | Workflow discovery, mapping, and specification | Mapping every path through a system before code is written |
-| ☁️ [Salesforce Architect](specialized/specialized-salesforce-architect.md) | Multi-cloud Salesforce design, governor limits, integrations | Enterprise Salesforce architecture, org strategy, deployment pipelines |
-| 🇫🇷 [French Consulting Market Navigator](specialized/specialized-french-consulting-market.md) | ESN/SI ecosystem, portage salarial, rate positioning | Freelance consulting in the French IT market |
-| 🇰🇷 [Korean Business Navigator](specialized/specialized-korean-business-navigator.md) | Korean business culture, 품의 process, relationship mechanics | Foreign professionals navigating Korean business relationships |
-| 🏗️ [Civil Engineer](specialized/specialized-civil-engineer.md) | Structural analysis, geotechnical design, global building codes | Multi-standard structural engineering across Eurocode, ACI, AISC, and more |
-| 🎧 [Customer Service](specialized/customer-service.md) | Omnichannel support, complaint handling, retention, escalation | Any industry customer support — retail, SaaS, hospitality, finance, logistics |
-| 🏥 [Healthcare Customer Service](specialized/healthcare-customer-service.md) | HIPAA-aware patient support, billing, insurance, emergency routing | Healthcare organizations needing compliant, empathetic patient support |
-| 🏨 [Hospitality Guest Services](specialized/hospitality-guest-services.md) | Reservations, concierge, complaint recovery, loyalty, events | Hotels, resorts, restaurants, and event venues |
-| 🤝 [HR Onboarding](specialized/hr-onboarding.md) | Pre-boarding, compliance, benefits enrollment, 30-60-90 day plans | Any company onboarding new hires — from startups to enterprise |
-| 🌐 [Language Translator](specialized/language-translator.md) | Spanish ↔ English translation, dialect awareness, cultural context | Travel, business, medical, and legal translation needs |
-| ⏱️ [Legal Billing & Time Tracking](specialized/legal-billing-time-tracking.md) | Time capture, billing narratives, IOLTA compliance, collections | Law firms maximizing revenue recovery and billing accuracy |
-| 📋 [Legal Client Intake](specialized/legal-client-intake.md) | Prospect qualification, conflict screening, consultation scheduling | Law firms converting inquiries into retained clients |
-| ⚖️ [Legal Document Review](specialized/legal-document-review.md) | Contract review, risk flagging, version comparison, compliance | Attorney-ready first-pass review across any practice area |
-| 🏦 [Loan Officer Assistant](specialized/loan-officer-assistant.md) | Borrower intake, TRID compliance, pipeline tracking, closing coordination | Mortgage and consumer lending teams |
-| 🏠 [Real Estate Buyer & Seller](specialized/real-estate-buyer-seller.md) | Buyer/seller representation, offers, transaction coordination | Residential and investment real estate transactions |
-| 🛒 [Retail Customer Returns](specialized/retail-customer-returns.md) | Return processing, fraud prevention, exchanges, vendor returns | Brick-and-mortar, e-commerce, and omnichannel retail |
-
-### 💵 Finance Division
-
-Accounting, financial analysis, tax strategy, and investment research specialists.
-
-| Agent | Specialty | When to Use |
-|-------|-----------|-------------|
-| 📒 [Bookkeeper & Controller](finance/finance-bookkeeper-controller.md) | Month-end close, reconciliation, GAAP compliance, internal controls | Day-to-day accounting operations, audit readiness, financial record-keeping |
-| 📊 [Financial Analyst](finance/finance-financial-analyst.md) | Financial modeling, forecasting, scenario analysis, decision support | Three-statement models, variance analysis, data-driven business intelligence |
-| 📈 [FP&A Analyst](finance/finance-fpa-analyst.md) | Budgeting, rolling forecasts, variance analysis, business reviews | Annual operating plans, monthly business reviews, strategic resource allocation |
-| 🔍 [Investment Researcher](finance/finance-investment-researcher.md) | Due diligence, portfolio analysis, asset valuation, equity research | Investment thesis development, risk assessment, market research |
-| 🏛️ [Tax Strategist](finance/finance-tax-strategist.md) | Tax optimization, multi-jurisdictional compliance, transfer pricing | Entity structuring, ETR analysis, audit defense, strategic tax planning |
-
-### 🎮 Game Development Division
-
-Building worlds, systems, and experiences across every major engine.
-
-#### Cross-Engine Agents (Engine-Agnostic)
-
-| Agent | Specialty | When to Use |
-|-------|-----------|-------------|
-| 🎯 [Game Designer](game-development/game-designer.md) | Systems design, GDD authorship, economy balancing, gameplay loops | Designing game mechanics, progression systems, writing design documents |
-| 🗺️ [Level Designer](game-development/level-designer.md) | Layout theory, pacing, encounter design, environmental storytelling | Building levels, designing encounter flow, spatial narrative |
-| 🎨 [Technical Artist](game-development/technical-artist.md) | Shaders, VFX, LOD pipeline, art-to-engine optimization | Bridging art and engineering, shader authoring, performance-safe asset pipelines |
-| 🔊 [Game Audio Engineer](game-development/game-audio-engineer.md) | FMOD/Wwise, adaptive music, spatial audio, audio budgets | Interactive audio systems, dynamic music, audio performance |
-| 📖 [Narrative Designer](game-development/narrative-designer.md) | Story systems, branching dialogue, lore architecture | Writing branching narratives, implementing dialogue systems, world lore |
-
-#### Unity
-
-| Agent | Specialty | When to Use |
-|-------|-----------|-------------|
-| 🏗️ [Unity Architect](game-development/unity/unity-architect.md) | ScriptableObjects, data-driven modularity, DOTS/ECS | Large-scale Unity projects, data-driven system design, ECS performance work |
-| ✨ [Unity Shader Graph Artist](game-development/unity/unity-shader-graph-artist.md) | Shader Graph, HLSL, URP/HDRP, Renderer Features | Custom Unity materials, VFX shaders, post-processing passes |
-| 🌐 [Unity Multiplayer Engineer](game-development/unity/unity-multiplayer-engineer.md) | Netcode for GameObjects, Unity Relay/Lobby, server authority, prediction | Online Unity games, client prediction, Unity Gaming Services integration |
-| 🛠️ [Unity Editor Tool Developer](game-development/unity/unity-editor-tool-developer.md) | EditorWindows, AssetPostprocessors, PropertyDrawers, build validation | Custom Unity Editor tooling, pipeline automation, content validation |
-
-#### Unreal Engine
-
-| Agent | Specialty | When to Use |
-|-------|-----------|-------------|
-| ⚙️ [Unreal Systems Engineer](game-development/unreal-engine/unreal-systems-engineer.md) | C++/Blueprint hybrid, GAS, Nanite constraints, memory management | Complex Unreal gameplay systems, Gameplay Ability System, engine-level C++ |
-| 🎨 [Unreal Technical Artist](game-development/unreal-engine/unreal-technical-artist.md) | Material Editor, Niagara, PCG, Substrate | Unreal materials, Niagara VFX, procedural content generation |
-| 🌐 [Unreal Multiplayer Architect](game-development/unreal-engine/unreal-multiplayer-architect.md) | Actor replication, GameMode/GameState hierarchy, dedicated server | Unreal online games, replication graphs, server authoritative Unreal |
-| 🗺️ [Unreal World Builder](game-development/unreal-engine/unreal-world-builder.md) | World Partition, Landscape, HLOD, LWC | Large open-world Unreal levels, streaming systems, terrain at scale |
-
-#### Godot
-
-| Agent | Specialty | When to Use |
-|-------|-----------|-------------|
-| 📜 [Godot Gameplay Scripter](game-development/godot/godot-gameplay-scripter.md) | GDScript 2.0, signals, composition, static typing | Godot gameplay systems, scene composition, performance-conscious GDScript |
-| 🌐 [Godot Multiplayer Engineer](game-development/godot/godot-multiplayer-engineer.md) | MultiplayerAPI, ENet/WebRTC, RPCs, authority model | Online Godot games, scene replication, server-authoritative Godot |
-| ✨ [Godot Shader Developer](game-development/godot/godot-shader-developer.md) | Godot shading language, VisualShader, RenderingDevice | Custom Godot materials, 2D/3D effects, post-processing, compute shaders |
-
-#### Blender
-
-| Agent | Specialty | When to Use |
-|-------|-----------|-------------|
-| 🧩 [Blender Addon Engineer](game-development/blender/blender-addon-engineer.md) | Blender Python (`bpy`), custom operators/panels, asset validators, exporters, pipeline automation | Building Blender add-ons, asset prep tools, export workflows, and DCC pipeline automation |
-
-#### Roblox Studio
-
-| Agent | Specialty | When to Use |
-|-------|-----------|-------------|
-| ⚙️ [Roblox Systems Scripter](game-development/roblox-studio/roblox-systems-scripter.md) | Luau, RemoteEvents/Functions, DataStore, server-authoritative module architecture | Building secure Roblox game systems, client-server communication, data persistence |
-| 🎯 [Roblox Experience Designer](game-development/roblox-studio/roblox-experience-designer.md) | Engagement loops, monetization, D1/D7 retention, onboarding flow | Designing Roblox game loops, Game Passes, daily rewards, player retention |
-| 👗 [Roblox Avatar Creator](game-development/roblox-studio/roblox-avatar-creator.md) | UGC pipeline, accessory rigging, Creator Marketplace submission | Roblox UGC items, HumanoidDescription customization, in-experience avatar shops |
-
-### 📚 Academic Division
-
-Scholarly rigor for world-building, storytelling, and narrative design.
-
-| Agent | Specialty | When to Use |
-|-------|-----------|-------------|
-| 🌍 [Anthropologist](academic/academic-anthropologist.md) | Cultural systems, kinship, rituals, belief systems | Designing culturally coherent societies with internal logic |
-| 🌐 [Geographer](academic/academic-geographer.md) | Physical/human geography, climate, cartography | Building geographically coherent worlds with realistic terrain and settlements |
-| 📚 [Historian](academic/academic-historian.md) | Historical analysis, periodization, material culture | Validating historical coherence, enriching settings with authentic period detail |
-| 📜 [Narratologist](academic/academic-narratologist.md) | Narrative theory, story structure, character arcs | Analyzing and improving story structure with established theoretical frameworks |
-| 🧠 [Psychologist](academic/academic-psychologist.md) | Personality theory, motivation, cognitive patterns | Building psychologically credible characters grounded in research |
-
----
-
-## 🎯 Real-World Use Cases
-
-### Scenario 1: Building a Startup MVP
-
-**Your Team**:
-1. 🎨 **Frontend Developer** - Build the React app
-2. 🏗️ **Backend Architect** - Design the API and database
-3. 🚀 **Growth Hacker** - Plan user acquisition
-4. ⚡ **Rapid Prototyper** - Fast iteration cycles
-5. 🔍 **Reality Checker** - Ensure quality before launch
-
-**Result**: Ship faster with specialized expertise at every stage.
-
----
-
-### Scenario 2: Marketing Campaign Launch
-
-**Your Team**:
-1. 📝 **Content Creator** - Develop campaign content
-2. 🐦 **Twitter Engager** - Twitter strategy and execution
-3. 📸 **Instagram Curator** - Visual content and stories
-4. 🤝 **Reddit Community Builder** - Authentic community engagement
-5. 📊 **Analytics Reporter** - Track and optimize performance
-
-**Result**: Multi-channel coordinated campaign with platform-specific expertise.
-
----
-
-### Scenario 3: Enterprise Feature Development
-
-**Your Team**:
-1. 👔 **Senior Project Manager** - Scope and task planning
-2. 💎 **Senior Developer** - Complex implementation
-3. 🎨 **UI Designer** - Design system and components
-4. 🧪 **Experiment Tracker** - A/B test planning
-5. 📸 **Evidence Collector** - Quality verification
-6. 🔍 **Reality Checker** - Production readiness
-
-**Result**: Enterprise-grade delivery with quality gates and documentation.
-
----
-
-### Scenario 4: Paid Media Account Takeover
-
-**Your Team**:
-
-1. 📋 **Paid Media Auditor** - Comprehensive account assessment
-2. 📡 **Tracking & Measurement Specialist** - Verify conversion tracking accuracy
-3. 💰 **PPC Campaign Strategist** - Redesign account architecture
-4. 🔍 **Search Query Analyst** - Clean up wasted spend from search terms
-5. ✍️ **Ad Creative Strategist** - Refresh all ad copy and extensions
-6. 📊 **Analytics Reporter** (Support Division) - Build reporting dashboards
-
-**Result**: Systematic account takeover with tracking verified, waste eliminated, structure optimized, and creative refreshed — all within the first 30 days.
-
----
-
-### Scenario 5: Full Agency Product Discovery
-
-**Your Team**: All 8 divisions working in parallel on a single mission.
-
-See the **[Nexus Spatial Discovery Exercise](examples/nexus-spatial-discovery.md)** -- a complete example where 8 agents (Product Trend Researcher, Backend Architect, Brand Guardian, Growth Hacker, Support Responder, UX Researcher, Project Shepherd, and XR Interface Architect) were deployed simultaneously to evaluate a software opportunity and produce a unified product plan covering market validation, technical architecture, brand strategy, go-to-market, support systems, UX research, project execution, and spatial UI design.
-
-**Result**: Comprehensive, cross-functional product blueprint produced in a single session. [More examples](examples/).
-
----
-
-## 🤝 Contributing
-
-We welcome contributions! Here's how you can help:
-
-### Add a New Agent
-
-1. Fork the repository
-2. Create a new agent file in the appropriate category
-3. Follow the agent template structure:
-   - Frontmatter with name, description, color
-   - Identity & Memory section
-   - Core Mission
-   - Critical Rules (domain-specific)
-   - Technical Deliverables with examples
-   - Workflow Process
-   - Success Metrics
-4. Submit a PR with your agent
-
-### Improve Existing Agents
-
-- Add real-world examples
-- Enhance code samples
-- Update success metrics
-- Improve workflows
-
-### Share Your Success Stories
-
-Have you used these agents successfully? Share your story in the [Discussions](https://github.com/msitarzewski/agency-agents/discussions)!
-
----
-
-## 📖 Agent Design Philosophy
-
-Each agent is designed with:
-
-1. **🎭 Strong Personality**: Not generic templates - real character and voice
-2. **📋 Clear Deliverables**: Concrete outputs, not vague guidance
-3. **✅ Success Metrics**: Measurable outcomes and quality standards
-4. **🔄 Proven Workflows**: Step-by-step processes that work
-5. **💡 Learning Memory**: Pattern recognition and continuous improvement
-
----
-
-## 🎁 What Makes This Special?
-
-### Unlike Generic AI Prompts:
-- ❌ Generic "Act as a developer" prompts
-- ✅ Deep specialization with personality and process
-
-### Unlike Prompt Libraries:
-- ❌ One-off prompt collections
-- ✅ Comprehensive agent systems with workflows and deliverables
-
-### Unlike AI Tools:
-- ❌ Black box tools you can't customize
-- ✅ Transparent, forkable, adaptable agent personalities
-
----
-
-## 🎨 Agent Personality Highlights
-
-> "I don't just test your code - I default to finding 3-5 issues and require visual proof for everything."
->
-> -- **Evidence Collector** (Testing Division)
-
-> "You're not marketing on Reddit - you're becoming a valued community member who happens to represent a brand."
->
-> -- **Reddit Community Builder** (Marketing Division)
-
-> "Every playful element must serve a functional or emotional purpose. Design delight that enhances rather than distracts."
->
-> -- **Whimsy Injector** (Design Division)
-
-> "Let me add a celebration animation that reduces task completion anxiety by 40%"
->
-> -- **Whimsy Injector** (during a UX review)
-
----
-
-## 📊 Stats
-
-- 🎭 **144 Specialized Agents** across 12 divisions
-- 📝 **10,000+ lines** of personality, process, and code examples
-- ⏱️ **Months of iteration** from real-world usage
-- 🌟 **Battle-tested** in production environments
-- 💬 **50+ requests** in first 12 hours on Reddit
-
----
-
-## 🔌 Multi-Tool Integrations
-
-The Agency works natively with Claude Code, and ships conversion + install scripts so you can use the same agents across every major agentic coding tool.
-
-### Supported Tools
-
-- **[Claude Code](https://claude.ai/code)** — native `.md` agents, no conversion needed → `~/.claude/agents/`
-- **[GitHub Copilot](https://github.com/copilot)** — native `.md` agents, no conversion needed → `~/.github/agents/` + `~/.copilot/agents/`
-- **[Antigravity](https://github.com/google-gemini/antigravity)** — `SKILL.md` per agent → `~/.gemini/antigravity/skills/`
-- **[Gemini CLI](https://github.com/google-gemini/gemini-cli)** — extension + `SKILL.md` files → `~/.gemini/extensions/agency-agents/`
-- **[OpenCode](https://opencode.ai)** — `.md` agent files → `.opencode/agents/`
-- **[Cursor](https://cursor.sh)** — `.mdc` rule files → `.cursor/rules/`
-- **[Aider](https://aider.chat)** — single `CONVENTIONS.md` → `./CONVENTIONS.md`
-- **[Windsurf](https://codeium.com/windsurf)** — single `.windsurfrules` → `./.windsurfrules`
-- **[OpenClaw](https://github.com/openclaw/openclaw)** — `SOUL.md` + `AGENTS.md` + `IDENTITY.md` per agent
-- **[Qwen Code](https://github.com/QwenLM/qwen-code)** — `.md` SubAgent files → `~/.qwen/agents/`
-- **[Kimi Code](https://github.com/MoonshotAI/kimi-cli)** — YAML agent specs → `~/.config/kimi/agents/`
-
----
-
-### ⚡ Quick Install
-
-**Step 1 -- Generate integration files:**
-```bash
-./scripts/convert.sh
-# Faster (parallel, output order may vary): ./scripts/convert.sh --parallel
-```
-
-**Step 2 -- Install (interactive, auto-detects your tools):**
-```bash
-./scripts/install.sh
-# Faster (parallel, output order may vary): ./scripts/install.sh --no-interactive --parallel
-```
-
-The installer scans your system for installed tools, shows a checkbox UI, and lets you pick exactly what to install:
-
-```
-  +------------------------------------------------+
-  |   The Agency -- Tool Installer                 |
-  +------------------------------------------------+
-
-  System scan: [*] = detected on this machine
-
-  [x]  1)  [*]  Claude Code     (claude.ai/code)
-  [x]  2)  [*]  Copilot         (~/.github + ~/.copilot)
-  [x]  3)  [*]  Antigravity     (~/.gemini/antigravity)
-  [ ]  4)  [ ]  Gemini CLI      (gemini extension)
-  [ ]  5)  [ ]  OpenCode        (opencode.ai)
-  [ ]  6)  [ ]  OpenClaw        (~/.openclaw/agency-agents)
-  [x]  7)  [*]  Cursor          (.cursor/rules)
-  [ ]  8)  [ ]  Aider           (CONVENTIONS.md)
-  [ ]  9)  [ ]  Windsurf        (.windsurfrules)
-  [ ] 10)  [ ]  Qwen Code       (~/.qwen/agents)
-  [ ] 11)  [ ]  Kimi Code       (~/.config/kimi/agents)
-
-  [1-11] toggle   [a] all   [n] none   [d] detected
-  [Enter] install   [q] quit
-```
-
-**Or install a specific tool directly:**
-```bash
-./scripts/install.sh --tool cursor
-./scripts/install.sh --tool opencode
-./scripts/install.sh --tool openclaw
-./scripts/install.sh --tool antigravity
-```
-
-**Non-interactive (CI/scripts):**
-```bash
-./scripts/install.sh --no-interactive --tool all
-```
-
-**Faster runs (parallel)** — On multi-core machines, use `--parallel` so each tool is processed in parallel. Output order across tools is non-deterministic. Works with both interactive and non-interactive install: e.g. `./scripts/install.sh --interactive --parallel` (pick tools, then install in parallel) or `./scripts/install.sh --no-interactive --parallel`. Job count defaults to `nproc` (Linux), `sysctl -n hw.ncpu` (macOS), or 4; override with `--jobs N`.
-
-```bash
-./scripts/convert.sh --parallel                    # convert all tools in parallel
-./scripts/convert.sh --parallel --jobs 8           # cap parallel jobs
-./scripts/install.sh --no-interactive --parallel   # install all detected tools in parallel
-./scripts/install.sh --interactive --parallel      # pick tools, then install in parallel
-./scripts/install.sh --no-interactive --parallel --jobs 4
-```
-
----
-
-### Tool-Specific Instructions
-
-<details>
-<summary><strong>Claude Code</strong></summary>
-
-Agents are copied directly from the repo into `~/.claude/agents/` -- no conversion needed.
-
-```bash
-./scripts/install.sh --tool claude-code
-```
-
-Then activate in Claude Code:
-```
-Use the Frontend Developer agent to review this component.
-```
-
-See [integrations/claude-code/README.md](integrations/claude-code/README.md) for details.
-</details>
-
-<details>
-<summary><strong>GitHub Copilot</strong></summary>
-
-Agents are copied directly from the repo into `~/.github/agents/` and `~/.copilot/agents/` -- no conversion needed.
-
-```bash
-./scripts/install.sh --tool copilot
-```
-
-Then activate in GitHub Copilot:
-```
-Use the Frontend Developer agent to review this component.
-```
-
-See [integrations/github-copilot/README.md](integrations/github-copilot/README.md) for details.
-</details>
-
-<details>
-<summary><strong>Antigravity (Gemini)</strong></summary>
-
-Each agent becomes a skill in `~/.gemini/antigravity/skills/agency-<slug>/`.
-
-```bash
-./scripts/install.sh --tool antigravity
-```
-
-Activate in Gemini with Antigravity:
-```
-@agency-frontend-developer review this React component
-```
-
-See [integrations/antigravity/README.md](integrations/antigravity/README.md) for details.
-</details>
-
-<details>
-<summary><strong>Gemini CLI</strong></summary>
-
-Installs as a Gemini CLI extension with one skill per agent plus a manifest.
-On a fresh clone, generate the Gemini extension files before running the installer.
-
-```bash
-./scripts/convert.sh --tool gemini-cli
-./scripts/install.sh --tool gemini-cli
-```
-
-See [integrations/gemini-cli/README.md](integrations/gemini-cli/README.md) for details.
-</details>
-
-<details>
-<summary><strong>OpenCode</strong></summary>
-
-Agents are placed in `.opencode/agents/` in your project root (project-scoped).
-
-```bash
-cd /your/project
-/path/to/agency-agents/scripts/install.sh --tool opencode
-```
-
-Or install globally:
-```bash
-mkdir -p ~/.config/opencode/agents
-cp integrations/opencode/agents/*.md ~/.config/opencode/agents/
-```
-
-Activate in OpenCode:
-```
-@backend-architect design this API.
-```
-
-See [integrations/opencode/README.md](integrations/opencode/README.md) for details.
-</details>
-
-<details>
-<summary><strong>Cursor</strong></summary>
-
-Each agent becomes a `.mdc` rule file in `.cursor/rules/` of your project.
-
-```bash
-cd /your/project
-/path/to/agency-agents/scripts/install.sh --tool cursor
-```
-
-Rules are auto-applied when Cursor detects them in the project. Reference them explicitly:
-```
-Use the @security-engineer rules to review this code.
-```
-
-See [integrations/cursor/README.md](integrations/cursor/README.md) for details.
-</details>
-
-<details>
-<summary><strong>Aider</strong></summary>
-
-All agents are compiled into a single `CONVENTIONS.md` file that Aider reads automatically.
-
-```bash
-cd /your/project
-/path/to/agency-agents/scripts/install.sh --tool aider
-```
-
-Then reference agents in your Aider session:
-```
-Use the Frontend Developer agent to refactor this component.
-```
-
-See [integrations/aider/README.md](integrations/aider/README.md) for details.
-</details>
-
-<details>
-<summary><strong>Windsurf</strong></summary>
-
-All agents are compiled into `.windsurfrules` in your project root.
-
-```bash
-cd /your/project
-/path/to/agency-agents/scripts/install.sh --tool windsurf
-```
-
-Reference agents in Windsurf's Cascade:
-```
-Use the Reality Checker agent to verify this is production ready.
-```
-
-See [integrations/windsurf/README.md](integrations/windsurf/README.md) for details.
-</details>
-
-<details>
-<summary><strong>OpenClaw</strong></summary>
-
-Each agent becomes a workspace with `SOUL.md`, `AGENTS.md`, and `IDENTITY.md` in `~/.openclaw/agency-agents/`.
-
-```bash
-./scripts/convert.sh --tool openclaw
-./scripts/install.sh --tool openclaw
-```
-
-If the `openclaw` CLI is available, the installer registers each workspace automatically.
-Run `openclaw gateway restart` after installation so the new agents are activated.
-
-See [integrations/openclaw/README.md](integrations/openclaw/README.md) for details.
-
-</details>
-
-<details>
-<summary><strong>Qwen Code</strong></summary>
-
-SubAgents are installed to `.qwen/agents/` in your project root (project-scoped).
-
-```bash
-# Convert and install (run from your project root)
-cd /your/project
-./scripts/convert.sh --tool qwen
-./scripts/install.sh --tool qwen
-```
-
-**Usage in Qwen Code:**
-- Reference by name: `Use the frontend-developer agent to review this component`
-- Or let Qwen auto-delegate based on task context
-- Manage via `/agents` command in interactive mode
-
-> 📚 [Qwen SubAgents Docs](https://qwenlm.github.io/qwen-code-docs/en/users/features/sub-agents/)
-
-</details>
-
-<details>
-<summary><strong>Kimi Code</strong></summary>
-
-Agents are converted to Kimi Code CLI format (YAML + system prompt) and installed to `~/.config/kimi/agents/`.
-
-```bash
-# Convert and install
-./scripts/convert.sh --tool kimi
-./scripts/install.sh --tool kimi
-```
-
-**Usage with Kimi Code:**
-```bash
-# Use an agent
-kimi --agent-file ~/.config/kimi/agents/frontend-developer/agent.yaml
-
-# In a project
-kimi --agent-file ~/.config/kimi/agents/frontend-developer/agent.yaml \
-     --work-dir /your/project \
-     "Review this React component"
-```
-
-See [integrations/kimi/README.md](integrations/kimi/README.md) for details.
-
-</details>
-
----
-
-### Regenerating After Changes
-
-When you add new agents or edit existing ones, regenerate all integration files:
-
-```bash
-./scripts/convert.sh                    # regenerate all (serial)
-./scripts/convert.sh --parallel         # regenerate all in parallel (faster)
-./scripts/convert.sh --tool cursor      # regenerate just one tool
-```
-
----
-
-## 🗺️ Roadmap
-
-- [ ] Interactive agent selector web tool
-- [x] Multi-agent workflow examples -- see [examples/](examples/)
-- [x] Multi-tool integration scripts (Claude Code, GitHub Copilot, Antigravity, Gemini CLI, OpenCode, OpenClaw, Cursor, Aider, Windsurf, Qwen Code, Kimi Code)
-- [ ] Video tutorials on agent design
-- [ ] Community agent marketplace
-- [ ] Agent "personality quiz" for project matching
-- [ ] "Agent of the Week" showcase series
-
----
-
-## 🌐 Community Translations & Localizations
-
-Community-maintained translations and regional adaptations. These are independently maintained -- see each repo for coverage and version compatibility.
-
-| Language | Maintainer | Link | Notes |
-|----------|-----------|------|-------|
-| 🇨🇳 简体中文 (zh-CN) | [@jnMetaCode](https://github.com/jnMetaCode) | [agency-agents-zh](https://github.com/jnMetaCode/agency-agents-zh) | 141 translated agents + 46 China-market originals |
-| 🇨🇳 简体中文 (zh-CN) | [@dsclca12](https://github.com/dsclca12) | [agent-teams](https://github.com/dsclca12/agent-teams) | Independent translation with Bilibili, WeChat, Xiaohongshu localization |
-
-Want to add a translation? Open an issue and we'll link it here.
-
----
-
-## 🔗 Related Resources
-
-- [awesome-openclaw-agents](https://github.com/mergisi/awesome-openclaw-agents) — Community-maintained OpenClaw agent collection (derived from this repo)
-
----
-
-## 📜 License
-
-MIT License - Use freely, commercially or personally. Attribution appreciated but not required.
-
----
-
-## 🙏 Acknowledgments
-
-What started as a Reddit thread about AI agent specialization has grown into something remarkable — **147 agents across 12 divisions**, supported by a community of contributors from around the world. Every agent in this repo exists because someone cared enough to write it, test it, and share it.
-
-To everyone who has opened a PR, filed an issue, started a Discussion, or simply tried an agent and told us what worked — thank you. You're the reason The Agency keeps getting better.
-
----
-
-## 💬 Community
-
-- **GitHub Discussions**: [Share your success stories](https://github.com/msitarzewski/agency-agents/discussions)
-- **Issues**: [Report bugs or request features](https://github.com/msitarzewski/agency-agents/issues)
-- **Reddit**: Join the conversation on r/ClaudeAI
-- **Twitter/X**: Share with #TheAgency
-
----
-
-## 🚀 Get Started
-
-1. **Browse** the agents above and find specialists for your needs
-2. **Copy** the agents to `~/.claude/agents/` for Claude Code integration
-3. **Activate** agents by referencing them in your Claude conversations
-4. **Customize** agent personalities and workflows for your specific needs
-5. **Share** your results and contribute back to the community
-
----
-
-<div align="center">
-
-**🎭 The Agency: Your AI Dream Team Awaits 🎭**
-
-[⭐ Star this repo](https://github.com/msitarzewski/agency-agents) • [🍴 Fork it](https://github.com/msitarzewski/agency-agents/fork) • [🐛 Report an issue](https://github.com/msitarzewski/agency-agents/issues) • [❤️ Sponsor](https://github.com/sponsors/msitarzewski)
-
-Made with ❤️ by the community, for the community
-
-</div>

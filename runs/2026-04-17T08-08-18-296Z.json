@@ -1,0 +1,61 @@
+{
+  "id": "2026-04-17T08-08-18-296Z",
+  "topic": "请用中文讨论当前 agent 生态里最受关注的明星产品、框架和模式",
+  "briefing": "全程使用简体中文交流。重点讨论 notable agent products、frameworks、orchestration patterns，以及为什么某些玩家现在受到 disproportionate\n  attention。比较产品完成度、开发体验和实际 usefulness，不要只谈 hype。",
+  "maxTurns": null,
+  "endless": true,
+  "selectedAgentIds": [
+    "agents-orchestrator",
+    "trend-researcher",
+    "tool-evaluator"
+  ],
+  "createdAt": "2026-04-17T08:08:18.296Z",
+  "completedAt": "2026-04-17T08:09:26.079Z",
+  "messages": [
+    {
+      "turnIndex": 0,
+      "agentId": "agents-orchestrator",
+      "agentName": "Agents Orchestrator",
+      "agentShortName": "Agent/Orche",
+      "content": "我先抛一个框架化判断：当前 agent 生态最受关注的“明星”基本分三层。第一层是**产品层**，像 ChatGPT 的 Deep Research / Operator 方向、Claude Code、Cursor、Perplexity Labs 这类，之所以吸睛，不只是模型强，而是把“会做事”包装成了可感知的体验。第二层是**开发框架层**，LangGraph、AutoGen、CrewAI、OpenAI Agents SDK 这类在吃到关注红利，因为大家已经从“单次 prompt”转向“可控多步执行”。第三层是**基础设施/模式层**，包括 tool calling、memory、eval、human-in-the-loop、browser/computer use，这些决定 agent 到底是 demo 还是能进生产。\n\n如果只看“为什么某些玩家被 disproportionate 关注”，我觉得核心是三件事：**分发入口、任务闭环、失败可解释性**。Cursor 和 Claude Code 其实很典型，它们未必在“agent 自主性”上最激进，但因为嵌进开发者高频工作流，价值极容易被感知；LangGraph 被讨论很多，也不是因为最简单，而是它把状态机、分支、重试、checkpoint 这些生产要素显式化了，团队更容易治理。相反，很多早期 agent 产品虽然看起来更 autonomous，但一旦出错就黑盒，用户很快失去信任。\n\n我觉得现在最值得区分的不是“谁最像人”，而是**哪类模式真正提高完成率**。目前最实用的往往不是 fully autonomous agent，而是“**orchestrated agent + 强约束工作流**”：先规划，再执行，关键节点做验证，失败自动回退。这也是为什么 coding agent、research agent 比“通用秘书 agent”更容易跑出来——任务边界清晰、可验证、反馈快。下一阶段真正会拉开差距的，可能不是新模型，而是谁把 eval、权限控制、成本控制、审计日志做得更像工程系统。\n\nTool Evaluator，请你接着具体比较一下 LangGraph、AutoGen、CrewAI、OpenAI Agents SDK 的开发体验差异，最好从“上手速度 vs 生产可控性”这个维度展开。",
+      "handoffLine": "Tool Evaluator，请你接着具体比较一下 LangGraph、AutoGen、CrewAI、OpenAI Agents SDK 的开发体验差异，最好从“上手速度 vs 生产可控性”这个维度展开。",
+      "createdAt": "2026-04-17T08:08:32.567Z"
+    },
+    {
+      "turnIndex": 1,
+      "agentId": "trend-researcher",
+      "agentName": "Trend Researcher",
+      "agentShortName": "Trend/Resea",
+      "content": "我补一个“市场热度 vs 真正采用”的视角：当前最受关注的明星产品，**明显向 coding agent 和 research agent 倾斜**，比如 Cursor、Claude Code、ChatGPT Deep Research、Perplexity Labs。这不是偶然，因为这两类任务同时满足三个条件：**高频、结果可检验、ROI 好算**。写代码能看 diff、跑测试；做研究能看引用、看结构化输出，所以用户更容易形成信任，也更愿意付费。相反，“通用生活助理 agent”话题性很强，但真实留存往往不如垂直场景，因为权限、容错和失败成本都更高。\n\n从框架和模式看，最近被 disproportionate 关注的，其实是那些**把 agent 从 demo 拉到工程系统**的玩家。LangGraph 受追捧，本质上是因为它顺应了企业团队的采购逻辑：可观测、可恢复、可编排；OpenAI Agents SDK 受关注，则更多来自平台势能和默认生态位。CrewAI 这类“多角色协作”框架传播很快，适合做概念验证和团队展示，但真到生产，大家又会回到状态管理、重试、权限边界、eval 这些硬问题。所以现在的一个明显趋势是：**前台讲 multi-agent，后台落点还是 workflow orchestration**。\n\n再往后看，我认为下一波真正会持续放大的模式有两个：一是“**agent + 人审 + eval 闭环**”，因为企业买的不是自主性，而是可控产出；二是“**嵌入现有入口**”——IDE、客服台、浏览器、办公套件，而不是单独再开一个 agent app。谁能占住入口、缩短首次成功时间、把失败变得可解释，谁就会继续拿到超额关注；这也是为什么不少技术上不一定最激进的产品，反而更像这一轮的明星。\n\nTool Evaluator，请你下一轮直接给一个四象限：LangGraph、AutoGen、CrewAI、OpenAI Agents SDK 分别放在“上手速度 × 生产可控性”里怎么排。",
+      "handoffLine": "Tool Evaluator，请你下一轮直接给一个四象限：LangGraph、AutoGen、CrewAI、OpenAI Agents SDK 分别放在“上手速度 × 生产可控性”里怎么排。",
+      "createdAt": "2026-04-17T08:08:47.245Z"
+    },
+    {
+      "turnIndex": 2,
+      "agentId": "tool-evaluator",
+      "agentName": "Tool Evaluator",
+      "agentShortName": "Tool/Evalu",
+      "content": "如果按“**上手速度 × 生产可控性**”画四象限，我会这样放：**右上是 OpenAI Agents SDK**，因为它上手快、文档和默认抽象顺，接 OpenAI 自家能力也最省心，适合想快速把 tool calling、handoff、basic orchestration 跑起来的团队；但它的生产可控性目前更偏“平台内最优”，一旦你要深度自定义状态机、复杂回滚、跨模型/跨供应商治理，灵活度不如 LangGraph。**左上是 LangGraph**，学习曲线更陡，但一旦进生产，它在状态管理、分支、checkpoint、human-in-the-loop、失败恢复上明显更强，尤其适合高价值、长流程、可审计场景。\n\n**右下是 CrewAI**，它最容易讲故事、最容易做 demo，多角色协作的心智模型也很讨喜，所以传播很快；但真进生产后，你很快会碰到可观测性、调试、权限边界和复杂工作流治理的问题。**中间偏左是 AutoGen**：它历史影响力很大，研究/实验氛围强，多 agent 对话范式启发了很多产品，但今天从“团队上手效率 + 工程落地一致性”看，体验有点夹在中间——不如 CrewAI 轻，不如 LangGraph 稳，不如 OpenAI Agents SDK 顺手。\n\n从企业选型看，我会给一个很实际的建议：**POC/展示优先 CrewAI，OpenAI 技术栈快速落地优先 Agents SDK，严肃生产编排优先 LangGraph，AutoGen 更适合研究型团队或已有积累的团队延续。** 安全和集成上，LangGraph/Agents SDK更适合做权限分层、日志审计、人工审批；成本上，CrewAI/AutoGen前期便宜在“代码快”，但后期可能贵在“维护和治理”，LangGraph前期投入高一些，但如果任务链长、失败成本高，长期 TCO 反而更可控。\n\nTrend Researcher，下一轮你接着讲：为什么 **Claude Code、Cursor、Deep Research** 这类“产品层明星”比底层框架更容易拿到超额关注？请从分发入口、付费意愿和可验证 ROI 三点展开。",
+      "handoffLine": "Trend Researcher，下一轮你接着讲：为什么 **Claude Code、Cursor、Deep Research** 这类“产品层明星”比底层框架更容易拿到超额关注？请从分发入口、付费意愿和可验证 ROI 三点展开。",
+      "createdAt": "2026-04-17T08:09:00.790Z"
+    },
+    {
+      "turnIndex": 3,
+      "agentId": "agents-orchestrator",
+      "agentName": "Agents Orchestrator",
+      "agentShortName": "Agent/Orche",
+      "content": "我认同前面的判断，补一句更“产品化”的结论：**产品层明星拿到超额关注，不只是因为能力强，而是因为它们把 agent 的价值压缩到了“几分钟内可感知”**。Cursor、Claude Code 直接嵌进 IDE，用户几乎不用改变工作流；Deep Research、Perplexity Labs 则把“多步搜索—整理—输出”打包成一个可交付结果。相比之下，底层框架虽然决定天花板，但离最终收益更远，所以更像“采购层关注”，不如产品层容易形成社交传播和口碑裂变。\n\n如果再往“模式”上收敛，我觉得现在最值得关注的不是 multi-agent 本身，而是三种正在稳定下来的主流范式：**Copilot 模式**（人主导，agent 辅助，典型是 Cursor/Claude Code）、**Managed Workflow 模式**（显式状态机、检查点、审批、回滚，典型是 LangGraph 思路）、**Outcome-as-a-Service 模式**（用户不关心过程，只关心交付物，典型是 Deep Research/Perplexity Labs）。这三种模式里，真正最容易进入生产的，通常不是“全自动代理团队”，而是“有限自主 + 强验证 + 可追责”的组合。\n\n所以我现在看明星玩家，会优先看四个指标：**首次成功时间、失败可解释性、嵌入式入口、可治理性**。谁能让用户第一次就“做成一件事”，并且出了错还能知道错在哪，谁就更可能持续拿到 disproportionate attention。也因此，未来一段时间里，框架竞争很可能从“谁更会编排 agent”，转向“谁更像一个能被企业接入的执行系统”。\n\nTrend Researcher，请下一轮具体比较一下 Cursor、Claude Code、Deep Research、Perplexity Labs 在“首次成功时间”和“可验证 ROI”上的差异，用一个简短排序表来讲。",
+      "handoffLine": "Trend Researcher，请下一轮具体比较一下 Cursor、Claude Code、Deep Research、Perplexity Labs 在“首次成功时间”和“可验证 ROI”上的差异，用一个简短排序表来讲。",
+      "createdAt": "2026-04-17T08:09:13.050Z"
+    },
+    {
+      "turnIndex": 4,
+      "agentId": "trend-researcher",
+      "agentName": "Trend Researcher",
+      "agentShortName": "Trend/Resea",
+      "content": "我接着给一个**“首次成功时间 × 可验证 ROI”**的简表。若看“用户第一次上手，几分钟内能不能明显感到值回票价”，我会这样排：\n\n| 产品 | 首次成功时间 | 可验证 ROI | 说明 |\n|---|---|---|---|\n| **Cursor** | 很快 | 很高 | 直接嵌 IDE，马上生成/改代码、看 diff、跑测试，价值最直观 |\n| **Claude Code** | 很快 | 很高 | 更像强执行型 coding agent，适合代码库操作，但对工程环境和用户习惯稍有要求 |\n| **Deep Research** | 中等偏快 | 高 | 出一份结构化研究结果很惊艳，但首次成功通常比写代码慢，且质量依赖任务定义 |\n| **Perplexity Labs** | 快 | 中高 | 搜索、整理、产出一体化，易感知，但深度和稳定性在复杂任务上波动更大 |\n\n为什么它们比底层框架更容易拿到超额关注？从市场视角看就是三点：**分发入口近、付费意愿强、ROI 可被老板看见**。Cursor/Claude Code 吃到了开发者入口红利，用户本来就在 IDE 里；而研发提效又是最容易预算化的场景。Deep Research/Perplexity Labs 则抓住了“信息过载”这个普遍痛点，把原本 1-2 小时的检索整理压缩成十几分钟，所以哪怕单次成本更高，用户也容易接受。反过来，框架层虽然重要，但价值要靠团队二次实现，离“第一眼惊艳”更远。\n\n补一个趋势判断：**接下来最受关注的明星，不一定是最强 agent，而是最会把“不确定性”产品化的玩家**。也就是：前台给出快速结果，后台用引用、diff、日志、审批流把可信度补上。谁能同时做到“快”和“可审计”，谁就会持续吃到 disproportionate attention。  \n**Tool Evaluator，请下一轮具体谈谈：如果团队要在 8 周内做一个企业可上线的 agent，LangGraph 和 OpenAI Agents SDK 各自最适合什么项目边界？**",
+      "handoffLine": "**Tool Evaluator，请下一轮具体谈谈：如果团队要在 8 周内做一个企业可上线的 agent，LangGraph 和 OpenAI Agents SDK 各自最适合什么项目边界？**",
+      "createdAt": "2026-04-17T08:09:26.078Z"
+    }
+  ]
+}

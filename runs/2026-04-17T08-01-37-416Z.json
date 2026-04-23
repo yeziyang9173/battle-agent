@@ -1,0 +1,33 @@
+{
+  "id": "2026-04-17T08-01-37-416Z",
+  "topic": "Endless mode smoke test",
+  "briefing": "Keep it short for a smoke test.",
+  "maxTurns": 2,
+  "endless": false,
+  "selectedAgentIds": [
+    "agents-orchestrator",
+    "trend-researcher"
+  ],
+  "createdAt": "2026-04-17T08:01:37.416Z",
+  "completedAt": "2026-04-17T08:01:58.643Z",
+  "messages": [
+    {
+      "turnIndex": 0,
+      "agentId": "agents-orchestrator",
+      "agentName": "Agents Orchestrator",
+      "agentShortName": "Agent/Orche",
+      "content": "For an endless mode smoke test, I’d keep the gate brutally small: verify the mode launches, core loop runs without immediate failure, score/state updates continue past an initial threshold, and exit/restart paths work. If this is truly “smoke,” we are not balancing difficulty or validating long-session economy yet.\n\nI’d define pass/fail around a few observable checks: start endless mode from the intended entry point, survive or simulate at least 3–5 loop iterations/waves, confirm no soft-lock/crash, verify one progression signal increments correctly, and confirm game-over or manual exit returns to a valid state. If automation exists, capture logs/screens plus one deterministic seed; if not, one manual run with timestamps is enough for first pass.\n\nRisk-wise, endless modes often fail on accumulation bugs: counters, spawn scaling, cleanup, and UI drift after repeated cycles. So I’d prioritize memory/performance smell checks and “does the 5th cycle behave like the 1st, just harder?” over anything cosmetic.\n\nTrend Researcher: suggest the top 3 player-visible failure patterns in endless modes we should explicitly include in this smoke checklist.",
+      "handoffLine": "Trend Researcher: suggest the top 3 player-visible failure patterns in endless modes we should explicitly include in this smoke checklist.",
+      "createdAt": "2026-04-17T08:01:48.251Z"
+    },
+    {
+      "turnIndex": 1,
+      "agentId": "trend-researcher",
+      "agentName": "Trend Researcher",
+      "agentShortName": "Trend/Resea",
+      "content": "Top 3 player-visible failure patterns I’d explicitly smoke-test:\n\n1. **Progression stalls or spikes irrationally** — waves stop advancing, score/currency stops incrementing, or difficulty suddenly jumps in a way that looks broken rather than harder. Players read this immediately as “endless mode is fake/busted.”  \n2. **State/UI desync after repeated loops** — wrong wave number, frozen timer, health/score mismatch, rewards not reflecting actual play, or game-over screen showing bad totals. In endless modes, trust in the run depends on visible counters staying coherent.  \n3. **Accumulation breakdowns that become obvious fast** — enemies stop spawning correctly, pickups pile up, effects/audio stack, framerate tanks, or controls feel delayed by cycle 4–5. Even in a smoke test, this is the clearest signal of loop instability.\n\nIf we want a very small checklist, I’d add one explicit observable for each: “progression increments each cycle,” “UI matches backend state at cycle 5 and on death,” and “spawn/perf feel consistent enough through 5 loops with no visible degradation.” That keeps it player-centered without turning smoke into a balance pass.\n\nAgent Orchestrator: turn those 3 failure patterns into a 6-item pass/fail smoke checklist with exact observable steps.",
+      "handoffLine": "Agent Orchestrator: turn those 3 failure patterns into a 6-item pass/fail smoke checklist with exact observable steps.",
+      "createdAt": "2026-04-17T08:01:58.643Z"
+    }
+  ]
+}

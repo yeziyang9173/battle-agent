@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum RunStatus {
+  pending
+  running
+  completed
+  stopped
+  failed
+}
+
+enum RunMode {
+  round_robin
+}
+
+enum MessageRole {
+  agent
+  system
+  host
+}
+
+model ConversationRun {
+  id               String                @id @default(cuid())
+  title            String
+  topic            String
+  briefing         String?
+  status           RunStatus             @default(pending)
+  mode             RunMode               @default(round_robin)
+  maxTurns         Int                   @default(10)
+  turnCount        Int                   @default(0)
+  selectedAgentIds String
+  config           String?
+  createdAt        DateTime              @default(now())
+  startedAt        DateTime?
+  completedAt      DateTime?
+  messages         ConversationMessage[]
+  events           ConversationEvent[]
+}
+
+model ConversationMessage {
+  id        String      @id @default(cuid())
+  runId      String
+  turnIndex  Int
+  agentId    String?
+  role       MessageRole
+  content    String
+  summary    String?
+  createdAt  DateTime    @default(now())
+  run        ConversationRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+
+  @@index([runId, turnIndex])
+}
+
+model ConversationEvent {
+  id        String      @id @default(cuid())
+  runId      String
+  seq        Int
+  type       String
+  payload    String
+  createdAt  DateTime    @default(now())
+  run        ConversationRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+
+  @@unique([runId, seq])
+  @@index([runId, createdAt])
+}
