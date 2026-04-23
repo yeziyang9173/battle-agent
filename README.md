@@ -46,6 +46,32 @@ ANTHROPIC_API_KEY=your_key_here npm run chat-agents -- \
   --max-turns 8
 ```
 
+### Chinese debate mode example
+
+```bash
+npm run chat-agents -- \
+  --topic "请问豆腐脑到底是咸的还是甜的" \
+  --auto-agents \
+  --lang zh \
+  --endless \
+  --persona debate \
+  --aggressive
+```
+
+CLI flags used above:
+
+- `--topic "..."`: Required. Sets the shared discussion/debate topic.
+- `--auto-agents`: Automatically selects suitable agents for the topic.
+- `--lang zh`: Forces Chinese output.
+- `--endless`: Runs continuous turns until you stop it manually (for example with `Ctrl + C`).
+- `--persona debate`: Uses a debate-style persona for opposing viewpoints.
+- `--aggressive`: Increases confrontation intensity for sharper argument exchange.
+
+Notes:
+
+- Keep the `--` after `npm run chat-agents` so npm forwards all following flags to the script.
+- If you want fixed participants instead of auto-selection, use `--agents a,b,c` and omit `--auto-agents`.
+
 What you will see:
 - **live output in the terminal** as each agent speaks
 - saved transcript files in `runs/<timestamp>.json`
